@@ -11,11 +11,9 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
-from detenv import load_dotenv
+from dotenv import load_dotenv
 import os
 load_dotenv()
-Secret_key = os.getenv('SECRET_KEY')
-Debug = os.getenv('DEBUG','False') == 'True'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,10 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-j&n!m1*d@i=$w#^$cvkyhlf-+yufjd3qb%=(g7w)ew$--^@jva'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = []
 
@@ -46,7 +44,7 @@ INSTALLED_APPS = [
     'ExpeditionsApp',
     'OffresApp',
     'VehiculesApp',
-    D
+    
 ]
 
 MIDDLEWARE = [
@@ -85,7 +83,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'mohamed.sqlite3',
     }
 }
 
@@ -130,3 +128,4 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+AUTH_USER_MODEL = 'EntreprisesApp.utilisateur'
