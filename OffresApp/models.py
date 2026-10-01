@@ -11,3 +11,5 @@ class offre (models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     entreprise =models.ForeignKey(Entreprise,on_delete=models.CASCADE,related_name='offres')
     expedition=models.ForeignKey(expedition,on_delete=models.CASCADE,related_name='offres')
+
+    # Vehicules
