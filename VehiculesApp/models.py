@@ -1,6 +1,7 @@
 from django.db import models
 from EntreprisesApp.models import Entreprise
 from OffresApp.models import offre
+from django.core.validators import MinValueValidator 
 # Create your models here.
 class vehicule(models.Model):
     immatriculation=models.CharField(max_length=15,unique=True)
@@ -13,7 +14,7 @@ class vehicule(models.Model):
     ],default='camionette')
     
     
-    capacite=models.IntegerField()
+    capacite=models.IntegerField(validators=[minValueValidator(100,"capacite doit etre superieur a 100")])
     disponibilite=models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
