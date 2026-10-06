@@ -1,6 +1,7 @@
 from django.db import models
 from EntreprisesApp.models import Entreprise
 from ExpeditionsApp.models import expedition
+from VehiculesApp.models import Vehicule
 from django.core.exceptions import ValidationError
 # Create your models here.
 class offre (models.Model):
@@ -12,10 +13,13 @@ class offre (models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     entreprise =models.ForeignKey(Entreprise,on_delete=models.CASCADE,related_name='offres')
     expedition=models.ForeignKey(expedition,on_delete=models.CASCADE,related_name='offres')
-
+    vehicule=models.ForeignKey(Vehicule,on_delete=models.CASCADE,related_name='offres')
     # Vehicules
     def clean(self):
         super().clean()
         #regle(s) metier
         if self.entreprise_id and self.entreprise.type_entreprise != 'transporteur':
             raise ValidationError({'entreprise': "une offre ne peut etre faite que par une entreprise de type transporteur"})
+#le vehicule proposé doit appartenir au meme transporteur
+        if self.vehicule_id and self.vehicule.entreprise_id != self.entreprise_id:
+            raise ValidationError({'vehicule': "le vehicule proposé doit appartenir au meme transporteur"}) 
