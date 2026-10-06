@@ -1,10 +1,12 @@
+from datetime import timezone
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinLengthValidator,MaxLengthValidator
 from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
 # Create your models here.
-
+ 
 matricule_fiscale=RegexValidator(regex=r'^\d{7}[/ -]?[A-Za-z][/ -]?[ABDNPEabdnpe][/ -]?[MPCNEmpcne][/ -]?\d{3}$',
                                  message="Le format du matricule fiscale est invalide. Il doit être au format 1234567/A/B/C/123 ou 1234567-A-B-C-123.")
 
@@ -14,8 +16,21 @@ def validate_email(value):
     if not value.endswith('@gmail.com'):
         raise ValidationError("L'adresse e-mail doit se terminer par '@gmail.com'.")
 
+
 class utilisateur(AbstractUser):
-    user_id=models.CharField(max_length=8,primary_key=True)
+    @classmethod
+    def _generate_user_id(cls):
+        annee = timezone.now().strftime('%y')  # Obtenir les deux derniers chiffres de l'année
+        prefix = f"{annee}user"
+        dernier = cls.objects.filter(user_id__startswith=prefix).order_by('-user_id').first()
+        compteur = int(dernier.user_id[-2:]) + 1 if dernier else 0
+        
+        if compteur > 99:
+            raise ValidationError("Le compteur d'utilisateur a dépassé la limite de 99 pour cette année.")
+
+        return f"{prefix}{compteur:02d}"
+    
+    user_id=models.CharField(max_length=8,primary_key=True )
     email = models.EmailField(unique=True,validators=[validate_email])
     
     role=models.CharField(max_length=20,
