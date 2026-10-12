@@ -1,5 +1,4 @@
-from datetime import timezone
-
+from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinLengthValidator,MaxLengthValidator
@@ -41,11 +40,17 @@ class utilisateur(AbstractUser):
     telephone=models.CharField(max_length=15)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    REQUIRED_FIELDS = ['email', 'telephone']
+    def save(self, *args, **kwargs):
+        if not self.user_id:
+            self.user_id = self._generate_user_id()
+        self.full_clean()
+        super().save(*args, **kwargs)
 
 
 class Entreprise(models.Model):
     raison_sociale = models.CharField(max_length=200,null=False, blank=False)
-    matricule_fiscale = models.CharField(max_length=17,unique=True, validators=[matricule_fiscale])
+    matricule_fiscal = models.CharField(max_length=17,unique=True, validators=[matricule_fiscale])
     type_entreprise = models.CharField(max_length=100,
     choices=[
         ('chargeur','Chargeur'),
@@ -54,6 +59,9 @@ class Entreprise(models.Model):
     adresse = models.TextField(validators=[MinLengthValidator(20,"adresse doit contenir au moins 20 caracteres"),MaxLengthValidator(300,"adresse doit contenir au plus 300 caracteres")])
     created_at = models.DateTimeField(auto_now_add=True)    
     updated_at = models.DateTimeField(auto_now=True)
-    gerant=models.OneToOneField(utilisateur,on_delete=models.CASCADE,related_name='entreprise',) 
+    gerant=models.OneToOneField(utilisateur,on_delete=models.CASCADE,related_name='entreprise',)
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
     
     

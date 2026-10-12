@@ -19,8 +19,8 @@ class Vehicule(models.Model):
     ],default='camionnette')
     
     
-    capacite=models.IntegerField(validators=[MinValueValidator(100,"capacite doit etre superieur a 100")])
-    disponibilite=models.BooleanField(default=True)
+    capacite_kg=models.IntegerField(validators=[MinValueValidator(100,"capacite doit etre superieur a 100")])
+    disponible=models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
   
@@ -30,3 +30,6 @@ class Vehicule(models.Model):
         super().clean()
         if self.entreprise_id and self.entreprise.type_entreprise != 'transporteur':
           raise ValidationError({'entreprise': "le vehicule doit appartenir a une entreprise de type transporteur"})
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)

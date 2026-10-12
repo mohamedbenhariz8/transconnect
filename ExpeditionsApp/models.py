@@ -25,7 +25,7 @@ class expedition(models.Model):
     def _generate_ref(cls):
         annee = timezone.now().strftime('%y')
 
-        prefix = f"EXP_{annee}_"
+        prefix = f"EXP-{annee}-"
         dernier = cls.objects.filter(reference__startswith=prefix).order_by('-reference').first()
         compteur= int(dernier.reference[-5:])+1 if dernier else 1
         
