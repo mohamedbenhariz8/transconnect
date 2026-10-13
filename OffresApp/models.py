@@ -1,7 +1,7 @@
 from django.db import models, transaction
 from EntreprisesApp.models import Entreprise
 from ExpeditionsApp.models import expedition
-from VehiculesApp.models import Vehicule, CAPACITE_MAX_KG
+from VehiculesApp.models import Vehicule
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 class offre (models.Model):
@@ -18,7 +18,7 @@ class offre (models.Model):
         super().clean()
         if self.entreprise_id and self.entreprise.type_entreprise != 'transporteur':
             raise ValidationError({'entreprise': "une offre ne peut etre faite que par une entreprise de type transporteur"})
-        if self.vehicule_id and self.vehicule.entreprise_id != self.entreprise_id:
+        if self.vehicule_id and self.transporteur_id and self.vehicule.entreprise_id != self.entreprise_id:
             raise ValidationError({'vehicule': "le vehicule proposé doit appartenir au meme transporteur"})
         if not self.pk and self.expedition_id and self.expedition.statut != 'publiee':
             raise ValidationError({'expedition': "une offre ne peut etre faite que pour une expedition de statut publiee"})
@@ -30,7 +30,16 @@ class offre (models.Model):
         if not self.pk and self.vehicule_id and self.vehicule.disponible==False:
             raise ValidationError({'vehicule': "ce vehicule n'est pas disponible"})
         if self.vehicule_id and self.expedition_id:
-            capacite_max = CAPACITE_MAX_KG.get(self.vehicule.type_vehicule)
+            if self.vehicule.type_vehicule == 'camionnette':
+                capacite_max = 1500
+            elif self.vehicule.type_vehicule == 'fourgon':
+                capacite_max = 3500
+            elif self.vehicule.type_vehicule == 'camion_porteur':
+                capacite_max = 19000
+            elif self.vehicule.type_vehicule == 'semi_remorque':
+                capacite_max = 26000
+            else:
+                capacite_max = None
             if capacite_max is not None and self.expedition.poids_kg > capacite_max:
                 raise ValidationError({'vehicule': f"un vehicule de type {self.vehicule.get_type_vehicule_display()} ne supporte pas plus de {capacite_max} kg (expedition : {self.expedition.poids_kg} kg)"})
 

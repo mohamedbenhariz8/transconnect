@@ -2,12 +2,6 @@ from django.db import models
 from EntreprisesApp.models import Entreprise
 from django.core.validators import MinValueValidator
 from django.core.exceptions import ValidationError
-CAPACITE_MAX_KG = {
-    'camionnette': 1500,
-    'fourgon': 3500,
-    'camion_porteur': 19000,
-    'semi_remorque': 26000,
-}
 class Vehicule(models.Model):
     immatriculation=models.CharField(max_length=15,unique=True)
     type_vehicule=models.CharField(max_length=20,choices=
