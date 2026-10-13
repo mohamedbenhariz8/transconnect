@@ -9,6 +9,7 @@ from django.core.exceptions import ValidationError
 matricule_fiscale=RegexValidator(regex=r'^\d{7}[/ -]?[A-Za-z][/ -]?[ABDNPEabdnpe][/ -]?[MPCNEmpcne][/ -]?\d{3}$',
                                  message="Le format du matricule fiscale est invalide. Il doit être au format 1234567/A/B/C/123 ou 1234567-A-B-C-123.")
 
+
 def validate_email(value):
     if not value :
         raise ValidationError("L'adresse e-mail est obligatoire.")
@@ -33,9 +34,9 @@ class utilisateur(AbstractUser):
     email = models.EmailField(unique=True,validators=[validate_email])
     
     role=models.CharField(max_length=20,
-        choices=[('admin','Admin'),
-                 
-                 ('user','User')]
+        choices=[('chargeur','chargeur'),
+                 ('transporteur','transporteur'),
+                 ('admin','admin')]
         ,default='user')
     telephone=models.CharField(max_length=15)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -60,6 +61,9 @@ class Entreprise(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)    
     updated_at = models.DateTimeField(auto_now=True)
     gerant=models.OneToOneField(utilisateur,on_delete=models.CASCADE,related_name='entreprise',)
+    def __str__(self):
+        return self.raison_sociale
+    
     def save(self, *args, **kwargs):
         self.full_clean()
         super().save(*args, **kwargs)

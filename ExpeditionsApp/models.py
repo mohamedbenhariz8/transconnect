@@ -16,6 +16,8 @@ class expedition(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     entreprise =models.ForeignKey(Entreprise,on_delete=models.CASCADE,related_name='expeditions')
+    def __str__(self):
+        return self.reference
     def clean(self):
         super().clean()
         

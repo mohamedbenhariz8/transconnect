@@ -11,7 +11,8 @@ class Vehicule(models.Model):
     ('semi_remorque','Semi-remorque'),
     ('fourgon','Fourgon'),
     ],default='camionnette')
-    
+    def __str__(self):
+        return self.immatriculation
     
     capacite_kg=models.IntegerField(validators=[MinValueValidator(100,"capacite doit etre superieur a 100")])
     disponible=models.BooleanField(default=True)
@@ -19,7 +20,8 @@ class Vehicule(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
   
     entreprise =models.ForeignKey(Entreprise,on_delete=models.CASCADE,related_name='vehicules')
-    
+    def _str__(self):
+        return self.immatriculation
     def clean(self):
         super().clean()
         if self.entreprise_id and self.entreprise.type_entreprise != 'transporteur':
