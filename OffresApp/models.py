@@ -20,7 +20,7 @@ class offre (models.Model):
         super().clean()
         if self.entreprise_id and self.entreprise.type_entreprise != 'transporteur':
             raise ValidationError({'entreprise': "une offre ne peut etre faite que par une entreprise de type transporteur"})
-        if self.vehicule_id and self.transporteur_id and self.vehicule.entreprise_id != self.entreprise_id:
+        if self.vehicule_id and self.entreprise_id and self.vehicule.entreprise_id != self.entreprise_id:
             raise ValidationError({'vehicule': "le vehicule proposé doit appartenir au meme transporteur"})
         if not self.pk and self.expedition_id and self.expedition.statut != 'publiee':
             raise ValidationError({'expedition': "une offre ne peut etre faite que pour une expedition de statut publiee"})
