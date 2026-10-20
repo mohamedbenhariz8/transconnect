@@ -14,7 +14,7 @@ class expeditionAdmin(admin.ModelAdmin):
         {'fields': ('reference', 'entreprise', 'statut')}),
         ('Trajet', {'fields': ('ville_depart', 'ville_arrivee', 'date_souhaitee')}),
         ('Marchandise', {'fields': ('poids_kg', 'description')}),
-        ('Dates', {'fields': ('created_at', 'updated_at')}),
+        ('Dates', {'classes': ('collapse',), 'fields': ('created_at', 'updated_at')}),
     )
 
 # Register your models here.

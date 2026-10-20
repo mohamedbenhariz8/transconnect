@@ -7,6 +7,19 @@ class offreAdmin(admin.ModelAdmin):
     list_filter = ('entreprise', 'expedition' )
     list_display_links = ('expedition',)
     list_editable = ('entreprise',)
+    readonly_fields = ('date_proposition', 'created_at', 'updated_at')
+    fieldsets = (
+        ('Détails de l\'Expédition & Transporteur', {
+            'fields': ('expedition', 'entreprise', 'vehicule')
+        }),
+        ('Offre Commerciale', {
+            'fields': ('prix', 'delai_jours', 'statut')
+        }),
+        ('Dates & Traçabilité', {
+            'classes': ('collapse',),
+            'fields': ('date_proposition', 'created_at', 'updated_at')
+        }),
+    )
 
 # Register your models here.
 admin.site.register(offre, offreAdmin)

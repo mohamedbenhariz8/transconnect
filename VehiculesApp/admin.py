@@ -8,5 +8,17 @@ class VehiculeAdmin(admin.ModelAdmin):
     ordering = ('immatriculation',)
     list_editable = ( 'disponible',)
     list_per_page = 10
+    fieldsets = (
+        ('Identification du Véhicule', {
+            'fields': ('immatriculation', 'type_vehicule', 'entreprise')
+        }),
+        ('Capacité & Disponibilité', {
+            'fields': ('capacite_kg', 'disponible')
+        }),
+        ('Dates & Traçabilité', {
+            'classes': ('collapse',),
+            'fields': ('created_at', 'updated_at')
+        }),
+    )
 # Register your models here.
 admin.site.register(Vehicule, VehiculeAdmin)
