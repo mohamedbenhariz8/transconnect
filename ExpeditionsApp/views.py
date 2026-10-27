@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import HttpResponse 
 from .models import expedition
 
@@ -13,7 +13,11 @@ def listExpeditions(request):
 def detailExpedition(request,pk):
     exp=expedition.objects.get(pk=pk)
     return render(request,'expedition/detail.html',{"exp":exp})    
-
+    # delete sans render
+def deleteExpedition(request,pk):
+    exp=expedition.objects.get(pk=pk)
+    exp.delete()
+    return redirect('list')
 
     
     
