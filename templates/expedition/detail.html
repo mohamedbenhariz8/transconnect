@@ -1,0 +1,12 @@
+{{ exp.reference }}<br>
+{{ exp.ville_depart }}<br>
+{{ exp.ville_arrivee }}<br>
+{{ exp.poids_kg }}<br>
+{{ exp.entreprise }}<br>
+
+{% if exp.date_souhaitee %}
+    {{ exp.date_souhaitee }}<br>
+{% else %}
+    Date non spécifiée<br>
+{% endif %}
+<a href="{% url 'list' %}">Back to List</a>
