@@ -54,7 +54,8 @@
                 <td>{{ expedition.date_souhaitee }}</td>
                 <td>{{ expedition.statut }}</td>
                 <td>
-                    <a href="{% url 'delete' expedition.pk %}">supprimer</a>
+                    {% comment %} <a href="{% url 'delete' expedition.pk %}">supprimer</a> {% endcomment %}
+                    <a href="{% url 'expedition_delete' expedition.pk %}">supprimer</a>
                 </td>
             </tr>
             {% empty %}

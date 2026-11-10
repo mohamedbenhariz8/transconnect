@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expedition Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #1e3a8a;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #163172;
+        }
+    </style>
+</head>
+<body>
+<!-- <h1>
+    {% if object %}
+        Update Expedition
+    {% else %}
+        Create Expedition
+    {% endif %}
+</h1> -->
+<h1>
+    {% if form.instance.pk %}
+        Update Expeditions
+    {% else %}
+        Create Expeditions
+    {% endif %}
+</h1>
+
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">{% if object %}Update{% else %}Create{% endif %} Expedition</button>
+        <a href="{% url 'expedition_list' %}">Cancel</a>
+    </form>
+</body>
+</html>
