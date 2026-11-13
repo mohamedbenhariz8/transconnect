@@ -1,0 +1,24 @@
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 30px;
+        background-color: #f4f6f9;
+        line-height: 1.8;
+    }
+</style>
+
+{{ vehicule.immatriculation }}<br>
+{{ vehicule.get_type_vehicule_display }}<br>
+{{ vehicule.capacite_kg }} kg<br>
+{% if vehicule.disponible %}
+    Disponible<br>
+{% else %}
+    Non disponible<br>
+{% endif %}
+{{ vehicule.entreprise }}<br>
+{{ vehicule.created_at }}<br>
+
+{% comment %} <a href="{% url 'vehicules_update' vehicule.pk %}">Modifier</a>
+<a href="{% url 'vehicules_delete' vehicule.pk %}">Supprimer</a> {% endcomment %}
+<a href="{% url 'vehicules_list' %}">Back to List</a>

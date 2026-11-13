@@ -8,11 +8,17 @@
         body {
             font-family: Arial, sans-serif;
             margin: 30px;
+            background-color: #f4f6f9;
+        }
+
+        h1 {
+            color: #1e3a8a;
         }
 
         table {
             border-collapse: collapse;
             width: 100%;
+            background-color: white;
         }
 
         th, td {
@@ -33,6 +39,8 @@
 </head>
 <body>
     <h1>Expeditions List</h1>
+    <a href="{% url 'expedition_create' %}">Ajouter une expedition</a>
+    <br><br>
     <!-- table avec css -->
     <table>
         <thead>
@@ -48,19 +56,20 @@
         <tbody>
             {% for expedition in liste %}
             <tr>
-                <td><a href="{% url 'detail' expedition.pk %}">{{ expedition.reference }}</a></td>
+                <td><a href="{% url 'expedition_detail' expedition.pk %}">{{ expedition.reference }}</a></td>
                 <td>{{ expedition.ville_depart }}</td>
                 <td>{{ expedition.ville_arrivee }}</td>
                 <td>{{ expedition.date_souhaitee }}</td>
                 <td>{{ expedition.statut }}</td>
                 <td>
                     {% comment %} <a href="{% url 'delete' expedition.pk %}">supprimer</a> {% endcomment %}
+                    <a href="{% url 'expedition_update' expedition.pk %}">modifier</a>
                     <a href="{% url 'expedition_delete' expedition.pk %}">supprimer</a>
                 </td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan="4">No expeditions available.</td>
+                <td colspan="6">No expeditions available.</td>
             </tr>
             {% endfor %}
         </tbody>

@@ -1,0 +1,20 @@
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 30px;
+        background-color: #f4f6f9;
+        line-height: 1.8;
+    }
+</style>
+
+{{ entreprise.raison_sociale }}<br>
+{{ entreprise.matricule_fiscal }}<br>
+{{ entreprise.type_entreprise }}<br>
+{{ entreprise.adresse }}<br>
+{{ entreprise.gerant }}<br>
+{{ entreprise.created_at }}<br>
+
+{% comment %} <a href="{% url 'entreprises_update' entreprise.pk %}">Modifier</a>
+<a href="{% url 'entreprises_delete' entreprise.pk %}">Supprimer</a> {% endcomment %}
+<a href="{% url 'entreprises_list' %}">Back to List</a>

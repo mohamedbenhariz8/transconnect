@@ -20,7 +20,7 @@ def validate_email(value):
 class utilisateur(AbstractUser):
     @classmethod
     def _generate_user_id(cls):
-        annee = timezone.now().strftime('%y')  # Obtenir les deux derniers chiffres de l'année
+        annee = timezone.now().strftime('%y')  
         prefix = f"{annee}user"
         dernier = cls.objects.filter(user_id__startswith=prefix).order_by('-user_id').first()
         compteur = int(dernier.user_id[-2:]) + 1 if dernier else 0

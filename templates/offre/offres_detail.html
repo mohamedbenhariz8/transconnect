@@ -1,0 +1,19 @@
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 30px;
+        background-color: #f4f6f9;
+        line-height: 1.8;
+    }
+</style>
+
+{{ offre.expedition }}<br>
+{{ offre.entreprise }}<br>
+{{ offre.vehicule }}<br>
+{{ offre.prix }} DT<br>
+{{ offre.delai_jours }} jours<br>
+{{ offre.statut }}<br>
+{{ offre.date_proposition }}<br>
+
+<a href="{% url 'offres_list' %}">Back to List</a>

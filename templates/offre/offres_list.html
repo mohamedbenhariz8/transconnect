@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offres</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background-color: #f4f6f9;
+        }
+
+        h1 {
+            color: #1e3a8a;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            background-color: white;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #1e3a8a;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Offres List</h1>
+    <a href="{% url 'offres_create' %}">Ajouter une offre</a>
+    <br><br>
+    <table>
+        <thead>
+            <tr>
+                <th>Expedition</th>
+                <th>Transporteur</th>
+                <th>Vehicule</th>
+                <th>Prix (DT)</th>
+                <th>Delai (jours)</th>
+                <th>Statut</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for offre in offres %}
+            <tr>
+                <td><a href="{% url 'offres_detail' offre.pk %}">{{ offre.expedition }}</a></td>
+                <td>{{ offre.entreprise }}</td>
+                <td>{{ offre.vehicule }}</td>
+                <td>{{ offre.prix }}</td>
+                <td>{{ offre.delai_jours }}</td>
+                <td>{{ offre.statut }}</td>
+                <td>
+                    <a href="{% url 'offres_update' offre.pk %}">modifier</a>
+                    <a href="{% url 'offres_delete' offre.pk %}">supprimer</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7">No offres available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

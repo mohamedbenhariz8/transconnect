@@ -33,15 +33,15 @@ class Expedition_detail(DetailView):
 class Expedition_delete(DeleteView):
     model=expedition
     template_name='expedition/expedition_confirm_delete.html'
-    success_url=reverse_lazy('list')
+    success_url=reverse_lazy('expedition_list')
 class Expedition_create(CreateView):
     model=expedition
     # fields=['ville_depart','ville_arrivee','poids_kg','date_souhaitee','description','entreprise']
     template_name='expedition/forms.html'
-    success_url=reverse_lazy('list')
+    success_url=reverse_lazy('expedition_list')
     form_class=ExpeditionForm
 class Expedition_update(UpdateView):
     model=expedition
     template_name='expedition/forms.html'
-    success_url=reverse_lazy('list')
+    success_url=reverse_lazy('expedition_list')
     form_class=ExpeditionForm    
