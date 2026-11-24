@@ -1,6 +1,6 @@
 from django import forms
 from .models import Entreprise, utilisateur
-
+from django.contrib.auth.forms import UserCreationForm , UserChangeForm
 class EntrepriseForm(forms.ModelForm):
     class Meta:
         model = Entreprise
@@ -11,3 +11,15 @@ class EntrepriseForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['gerant'].queryset = utilisateur.objects.filter(entreprise__isnull=True) | utilisateur.objects.filter(pk=self.instance.gerant_id)
+
+class InscriptionForm(UserCreationForm):
+    class Meta ( UserCreationForm.Meta):
+        model = utilisateur
+        fields = UserCreationForm.Meta.fields + ('email', 'telephone','role')
+        
+        
+
+        
+        
+        
+    

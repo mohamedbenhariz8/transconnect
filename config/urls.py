@@ -17,13 +17,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls import include
-
+from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.decorators import login_required
+from django.views.generic import TemplateView
+from EntreprisesApp.views import inscriptionView
 urlpatterns = [
+    path('', login_required(TemplateView.as_view(template_name='home.html')), name='accueil'),
     path('admin/', admin.site.urls),
     path('expedition/', include('ExpeditionsApp.urls')),
     path('entreprise/', include('EntreprisesApp.urls')),
     path('vehicule/', include('VehiculesApp.urls')),
     path('offre/', include('OffresApp.urls')),
-    
+    path('login/',LoginView.as_view(template_name='login.html'), name='Login'),
+    path('logout/', LogoutView.as_view(),name='Logout'),
+    path('inscription/', inscriptionView , name='inscription')
     
 ]
