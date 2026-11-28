@@ -5,5 +5,7 @@ urlpatterns = [
  path('offres_detail/<int:pk>/',offres_detail.as_view(),name='offres_detail'),
  path('offres_delete/<int:pk>/',offres_delete.as_view(),name='offres_delete'),
  path('offres_create/',offres_create.as_view(),name='offres_create'),
- path('offres_update/<int:pk>/',offres_update.as_view(),name='offres_update')
+ path('offres_update/<int:pk>/',offres_update.as_view(),name='offres_update'),
+ path('offres_accepter/<int:pk>/',offres_accepter.as_view(),name='offres_accepter'),
+ path('offres_refuser/<int:pk>/',offres_refuser.as_view(),name='offres_refuser')
 ]

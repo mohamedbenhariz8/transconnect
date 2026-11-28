@@ -28,6 +28,10 @@ class offre (models.Model):
             deja = offre.objects.filter(entreprise_id=self.entreprise_id, expedition_id=self.expedition_id, statut='proposee').exclude(pk=self.pk)
             if deja.exists():
                 raise ValidationError("cette entreprise a deja une offre proposee sur cette expedition")
+        if self.statut == 'acceptee' and self.expedition_id:
+            autre_acceptee = offre.objects.filter(expedition_id=self.expedition_id, statut='acceptee').exclude(pk=self.pk)
+            if autre_acceptee.exists():
+                raise ValidationError("une offre a deja ete acceptee pour cette expedition")
 
         if not self.pk and self.vehicule_id and self.vehicule.disponible==False:
             raise ValidationError({'vehicule': "ce vehicule n'est pas disponible"})

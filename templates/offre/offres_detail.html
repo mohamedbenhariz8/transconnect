@@ -1,19 +1,33 @@
+{% extends 'base.html' %}
 
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 30px;
-        background-color: #f4f6f9;
-        line-height: 1.8;
-    }
-</style>
+{% block title %}Offre{% endblock %}
+{% block style %}<style>main { line-height: 1.8; }</style>{% endblock %}
 
+{% block content %}
+<h1>Offre sur {{ offre.expedition.reference }}</h1>
 {{ offre.expedition }}<br>
 {{ offre.entreprise }}<br>
 {{ offre.vehicule }}<br>
 {{ offre.prix }} DT<br>
 {{ offre.delai_jours }} jours<br>
-{{ offre.statut }}<br>
+{{ offre.get_statut_display }}<br>
 {{ offre.date_proposition }}<br>
 
+{% if offre.statut == 'proposee' %}
+    {% if offre.entreprise_id == mon_entreprise.pk %}
+        <a href="{% url 'offres_update' offre.pk %}">Modifier</a>
+        <a href="{% url 'offres_delete' offre.pk %}">Retirer l'offre</a><br>
+    {% elif offre.expedition.entreprise_id == mon_entreprise.pk and offre.expedition.statut == 'publiee' %}
+        <form method="post" action="{% url 'offres_accepter' offre.pk %}" style="display:inline">
+            {% csrf_token %}
+            <button type="submit">Accepter</button>
+        </form>
+        <form method="post" action="{% url 'offres_refuser' offre.pk %}" style="display:inline">
+            {% csrf_token %}
+            <button type="submit">Refuser</button>
+        </form><br>
+    {% endif %}
+{% endif %}
+
 <a href="{% url 'offres_list' %}">Back to List</a>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Modifier mon profil{% endblock %}
+{% block style %}{% include '_form_style.html' %}{% endblock %}
+
+{% block content %}
+<h1>Modifier mon profil</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Enregistrer</button>
+    <a href="{% url 'profil' %}">Annuler</a>
+</form>
+{% endblock %}

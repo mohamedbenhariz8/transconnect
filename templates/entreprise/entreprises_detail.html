@@ -1,20 +1,19 @@
+{% extends 'base.html' %}
 
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 30px;
-        background-color: #f4f6f9;
-        line-height: 1.8;
-    }
-</style>
+{% block title %}{{ entreprise.raison_sociale }}{% endblock %}
+{% block style %}<style>main { line-height: 1.8; }</style>{% endblock %}
 
-{{ entreprise.raison_sociale }}<br>
+{% block content %}
+<h1>{{ entreprise.raison_sociale }}</h1>
 {{ entreprise.matricule_fiscal }}<br>
-{{ entreprise.type_entreprise }}<br>
+{{ entreprise.get_type_entreprise_display }}<br>
 {{ entreprise.adresse }}<br>
 {{ entreprise.gerant }}<br>
 {{ entreprise.created_at }}<br>
 
-{% comment %} <a href="{% url 'entreprises_update' entreprise.pk %}">Modifier</a>
-<a href="{% url 'entreprises_delete' entreprise.pk %}">Supprimer</a> {% endcomment %}
+{% if mon_entreprise and entreprise.pk == mon_entreprise.pk %}
+<a href="{% url 'entreprises_update' entreprise.pk %}">Modifier</a>
+<a href="{% url 'entreprises_delete' entreprise.pk %}">Supprimer</a><br>
+{% endif %}
 <a href="{% url 'entreprises_list' %}">Back to List</a>
+{% endblock %}

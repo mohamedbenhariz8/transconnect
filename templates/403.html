@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Accès refusé{% endblock %}
+{% block style %}<style>main h1 { color: #dc2626; }</style>{% endblock %}
+
+{% block content %}
+<h1>403 — Accès refusé</h1>
+<p>Vous n'avez pas la permission d'effectuer cette action.</p>
+{% if mon_entreprise %}
+    <p>Votre entreprise est de type <strong>{{ mon_entreprise.get_type_entreprise_display }}</strong> : cette page est réservée à l'autre type d'entreprise.</p>
+{% endif %}
+<a href="{% url 'expedition_list' %}">Retour aux expéditions</a>
+{% endblock %}

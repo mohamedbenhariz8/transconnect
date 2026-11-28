@@ -1,78 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 30px;
-            background-color: #f4f6f9;
-        }
+{% extends 'base.html' %}
 
-        h1 {
-            color: #1e3a8a;
-        }
+{% block title %}Expéditions{% endblock %}
 
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            background-color: white;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #1e3a8a;
-            color: white;
-        }
-
-        tr:hover {
-            background-color: #f2f2f2;
-        }
-    </style>
-</head>
-<body>
-    <h1>Expeditions List</h1>
-    <a href="{% url 'expedition_create' %}">Ajouter une expedition</a>
-    <br><br>
-    <!-- table avec css -->
-    <table>
-        <thead>
-            <tr>
-                <th>Reference</th>
-                <th>Ville Depart</th>
-                <th>Ville Arrivee</th>
-                <th>Date Souhaitee</th>
-                <th>statut</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for expedition in liste %}
-            <tr>
-                <td><a href="{% url 'expedition_detail' expedition.pk %}">{{ expedition.reference }}</a></td>
-                <td>{{ expedition.ville_depart }}</td>
-                <td>{{ expedition.ville_arrivee }}</td>
-                <td>{{ expedition.date_souhaitee }}</td>
-                <td>{{ expedition.statut }}</td>
-                <td>
-                    {% comment %} <a href="{% url 'delete' expedition.pk %}">supprimer</a> {% endcomment %}
-                    <a href="{% url 'expedition_update' expedition.pk %}">modifier</a>
-                    <a href="{% url 'expedition_delete' expedition.pk %}">supprimer</a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="6">No expeditions available.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</body>
-</html>
+{% block content %}
+<h1>Expeditions List</h1>
+{% if mon_entreprise.type_entreprise == 'chargeur' %}
+<a href="{% url 'expedition_create' %}">Ajouter une expedition</a>
+<br><br>
+{% endif %}
+<table>
+    <thead>
+        <tr>
+            <th>Reference</th>
+            <th>Ville Depart</th>
+            <th>Ville Arrivee</th>
+            <th>Date Souhaitee</th>
+            <th>Statut</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for expedition in liste %}
+        <tr>
+            <td><a href="{% url 'expedition_detail' expedition.pk %}">{{ expedition.reference }}</a></td>
+            <td>{{ expedition.ville_depart }}</td>
+            <td>{{ expedition.ville_arrivee }}</td>
+            <td>{{ expedition.date_souhaitee }}</td>
+            <td>{{ expedition.get_statut_display }}</td>
+            <td>
+                {% if user.is_authenticated and expedition.statut == 'publiee' %}
+                    {% if mon_entreprise and expedition.entreprise_id == mon_entreprise.pk %}
+                        <a href="{% url 'expedition_update' expedition.pk %}">modifier</a>
+                        <a href="{% url 'expedition_delete' expedition.pk %}">supprimer</a>
+                    {% elif mon_entreprise.type_entreprise == 'transporteur' %}
+                        <a href="{% url 'offres_create' %}?expedition={{ expedition.pk }}">proposer une offre</a>
+                    {% endif %}
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No expeditions available.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

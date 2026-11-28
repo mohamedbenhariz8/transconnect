@@ -1,37 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 30px;
-            background-color: #f4f6f9;
-        }
+{% extends 'base.html' %}
 
-        h1 {
-            color: #dc2626;
-        }
+{% block title %}Supprimer l'expédition{% endblock %}
+{% block style %}{% include '_delete_style.html' %}{% endblock %}
 
-        button {
-            background-color: #dc2626;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
-    <h1>Expedition Delete Confirmation</h1>
-    <p>Are you sure you want to delete the expedition with reference: {{ object.reference }}?</p>
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit">Confirm Delete</button>
-        <a href="{% url 'expedition_list' %}">Cancel</a>
-    </form>
-</body>
-</html>
+{% block content %}
+<h1>Expedition Delete Confirmation</h1>
+<p>Are you sure you want to delete the expedition with reference: {{ object.reference }}?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Confirm Delete</button>
+    <a href="{% url 'expedition_list' %}">Cancel</a>
+</form>
+{% endblock %}

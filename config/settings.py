@@ -53,6 +53,9 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    # tout le site exige une connexion, sauf les vues marquees @login_not_required
+    # (accueil, inscription ; login et reinitialisation du mot de passe le sont deja)
+    'django.contrib.auth.middleware.LoginRequiredMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -69,6 +72,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'EntreprisesApp.context_processors.entreprise_courante',
             ],
         },
     },
@@ -129,7 +133,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'EntreprisesApp.utilisateur'
-LOGIN_URL = 'Login'
-LOGIN_REDIRECT_URL = 'accueil'
-LOGOUT_REDIRECT_URL = 'Login'
+LOGIN_URL = 'login'                        # ou envoyer un visiteur non connecte
+LOGIN_REDIRECT_URL = 'expedition_list'     # ou aller apres une connexion reussie
+LOGOUT_REDIRECT_URL = 'accueil'            # ou aller apres une deconnexion (seule page publique)
 

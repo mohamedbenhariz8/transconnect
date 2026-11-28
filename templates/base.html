@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}TransConnect{% endblock %} · TransConnect</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f4f6f9;
+        }
+
+        nav {
+            background: linear-gradient(135deg, #1e3a8a, #0f172a);
+            padding: 12px 30px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        nav a, nav span {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        nav .marque {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        nav .espace {
+            flex: 1;
+        }
+
+        nav form {
+            display: inline;
+            margin: 0;
+        }
+
+        nav button {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 999px;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+        }
+
+        main {
+            padding: 30px;
+        }
+
+        h1, h2 {
+            color: #1e3a8a;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            background-color: white;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #1e3a8a;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f2f2f2;
+        }
+
+        .messages p {
+            background: white;
+            border-left: 4px solid #1e3a8a;
+            padding: 10px 14px;
+        }
+
+        .messages p.error {
+            border-left-color: #dc2626;
+        }
+    </style>
+    {% block style %}{% endblock %}
+</head>
+<body>
+    <nav>
+        <a class="marque" href="{% url 'accueil' %}">TransConnect</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'expedition_list' %}">Expéditions</a>
+            {% if mon_entreprise.type_entreprise == 'transporteur' %}
+                <a href="{% url 'mes_vehicules' %}">Mes véhicules</a>
+            {% elif mon_entreprise.type_entreprise == 'chargeur' %}
+                <a href="{% url 'expedition_create' %}">Publier une expédition</a>
+            {% endif %}
+            {% if mon_entreprise %}
+                <a href="{% url 'offres_list' %}">Offres</a>
+            {% else %}
+                <a href="{% url 'entreprises_create' %}">Créer mon entreprise</a>
+            {% endif %}
+            <span class="espace"></span>
+            <a href="{% url 'profil' %}">Connecté : {{ user.username }}</a>
+            <a href="{% url 'password_change' %}">Changer mon mot de passe</a>
+            {% if user.is_staff %}
+                <a href="{% url 'admin:index' %}">Administration</a>
+            {% endif %}
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit">Se déconnecter</button>
+            </form>
+        {% else %}
+            <span class="espace"></span>
+            <a href="{% url 'login' %}">Se connecter</a>
+            <a href="{% url 'inscription' %}">Créer un compte</a>
+        {% endif %}
+    </nav>
+
+    <main>
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <p class="{{ message.tags }}">{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

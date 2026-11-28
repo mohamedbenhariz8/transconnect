@@ -1,22 +1,28 @@
+{% extends 'base.html' %}
 
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 30px;
-        background-color: #f4f6f9;
-        line-height: 1.8;
-    }
-</style>
+{% block title %}Expédition {{ exp.reference }}{% endblock %}
+{% block style %}<style>main { line-height: 1.8; }</style>{% endblock %}
 
-{{ exp.reference }}<br>
-{{ exp.ville_depart }}<br>
-{{ exp.ville_arrivee }}<br>
-{{ exp.poids_kg }}<br>
+{% block content %}
+<h1>Expedition {{ exp.reference }}</h1>
+{{ exp.ville_depart }} → {{ exp.ville_arrivee }}<br>
+{{ exp.poids_kg }} kg<br>
 {{ exp.entreprise }}<br>
-
 {% if exp.date_souhaitee %}
     {{ exp.date_souhaitee }}<br>
 {% else %}
     Date non spécifiée<br>
 {% endif %}
+{{ exp.description }}<br>
+{{ exp.get_statut_display }}<br>
+
+{% if user.is_authenticated and exp.statut == 'publiee' %}
+    {% if mon_entreprise and exp.entreprise_id == mon_entreprise.pk %}
+        <a href="{% url 'expedition_update' exp.pk %}">Modifier</a>
+        <a href="{% url 'expedition_delete' exp.pk %}">Supprimer</a><br>
+    {% elif mon_entreprise.type_entreprise == 'transporteur' %}
+        <a href="{% url 'offres_create' %}?expedition={{ exp.pk }}">Proposer une offre</a><br>
+    {% endif %}
+{% endif %}
 <a href="{% url 'expedition_list' %}">Back to List</a>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}Mon profil{% endblock %}
+{% block style %}
+<style>
+    .profil {
+        max-width: 560px;
+        background: white;
+        border-radius: 8px;
+        padding: 20px 24px;
+    }
+
+    .profil dl {
+        display: grid;
+        grid-template-columns: 160px 1fr;
+        gap: 10px 16px;
+        margin: 0 0 20px 0;
+    }
+
+    .profil dt {
+        font-weight: bold;
+        color: #555;
+    }
+
+    .profil dd {
+        margin: 0;
+    }
+
+    .profil h2 {
+        margin-top: 24px;
+        font-size: 18px;
+    }
+
+    .actions a {
+        display: inline-block;
+        margin-right: 12px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<h1>Mon profil</h1>
+
+<div class="profil">
+    <dl>
+        <dt>Identifiant</dt>
+        <dd>{{ user.user_id }}</dd>
+
+        <dt>Nom d'utilisateur</dt>
+        <dd>{{ user.username }}</dd>
+
+        <dt>Nom complet</dt>
+        <dd>{{ user.get_full_name|default:"—" }}</dd>
+
+        <dt>E-mail</dt>
+        <dd>{{ user.email }}</dd>
+
+        <dt>Téléphone</dt>
+        <dd>{{ user.telephone|default:"—" }}</dd>
+
+        <dt>Rôle</dt>
+        <dd>{{ user.get_role_display }}</dd>
+
+        <dt>Inscrit le</dt>
+        <dd>{{ user.date_joined|date:"d/m/Y H:i" }}</dd>
+
+        <dt>Dernière connexion</dt>
+        <dd>{{ user.last_login|date:"d/m/Y H:i"|default:"—" }}</dd>
+    </dl>
+
+    <h2>Mon entreprise</h2>
+    {% if mon_entreprise %}
+        <p>
+            <a href="{% url 'entreprises_detail' mon_entreprise.pk %}">{{ mon_entreprise.raison_sociale }}</a>
+            ({{ mon_entreprise.get_type_entreprise_display }}) — {{ mon_entreprise.matricule_fiscal }}
+        </p>
+    {% else %}
+        <p>Aucune entreprise. <a href="{% url 'entreprises_create' %}">Créer mon entreprise</a></p>
+    {% endif %}
+
+    <div class="actions">
+        <a href="{% url 'profil_modifier' %}">Modifier mon profil</a>
+        <a href="{% url 'password_change' %}">Changer mon mot de passe</a>
+    </div>
+</div>
+{% endblock %}
